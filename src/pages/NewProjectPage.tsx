@@ -5,7 +5,7 @@ import { Card, CardHeader, CardBody } from '../components/ui/Card';
 import ProjectForm from '../components/ProjectForm';
 import Alert from '../components/ui/Alert';
 import { ArrowLeft } from 'lucide-react';
-import Button from '../components/ui/Button';
+
 
 const NewProjectPage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const NewProjectPage: React.FC = () => {
     
     try {
       const newProject = await projectService.createProject(formData);
+      console.log('Project created successfully:', newProject);
+      console.log(formData);
       navigate(`/projects/${newProject.id}`);
     } catch (err) {
       console.error('Failed to create project:', err);

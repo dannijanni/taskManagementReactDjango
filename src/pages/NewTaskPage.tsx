@@ -42,9 +42,13 @@ const NewTaskPage: React.FC = () => {
 
     try {
       const newTask = await taskService.createTask(formData);
-      navigate(`/tasks/${newTask.id}`);
+      console.log('Task created successfully:', newTask);
+      console.log(formData);
+      //navigate(`/tasks/${newTask.id}`);
+      navigate('/tasks');
     } catch (err) {
       console.error('Failed to create task:', err);
+      console.log(formData);
       setError(err instanceof Error ? err.message : 'Failed to create task');
     } finally {
       setIsSubmitting(false);

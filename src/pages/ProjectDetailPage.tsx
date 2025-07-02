@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { projectService } from '../services/projectService';
 import { taskService } from '../services/taskService';
 import { Project, Task } from '../types';
-import { Card, CardHeader, CardBody, CardFooter } from '../components/ui/Card';
+import { Card, CardHeader, CardBody } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import TaskCard from '../components/TaskCard';
 import Modal from '../components/ui/Modal';
@@ -48,7 +48,18 @@ const ProjectDetailPage: React.FC = () => {
           taskService.getAllTasks(),
         ]);
         
-        setProject(fetchedProject);
+        // Validate dates before setting state and ensure they are strings
+        const validatedProject = {
+          ...fetchedProject,
+          createdAt: isValidDate(fetchedProject.createdAt)
+            ? String(fetchedProject.createdAt)
+            : new Date().toISOString(),
+          updatedAt: isValidDate(fetchedProject.updatedAt)
+            ? String(fetchedProject.updatedAt)
+            : new Date().toISOString()
+        };
+        
+        setProject(validatedProject);
         
         // Filter tasks by projectId
         const projectTasks = allTasks.filter(task => task.projectId === projectId);
@@ -63,6 +74,13 @@ const ProjectDetailPage: React.FC = () => {
     
     fetchData();
   }, [projectId]);
+
+  // Helper function to validate dates
+  const isValidDate = (date: any): boolean => {
+    if (!date) return false;
+    const d = new Date(date);
+    return !isNaN(d.getTime());
+  };
   
   const handleEdit = async (formData: any) => {
     if (!project) return;
@@ -189,7 +207,11 @@ const ProjectDetailPage: React.FC = () => {
                         <Calendar className="h-5 w-5 text-gray-500 mr-2" />
                         <span>Created</span>
                       </div>
-                      <span className="font-medium">{formatDate(project.createdAt)}</span>
+                      <span className="font-medium">
+                        {isValidDate(project.createdAt) 
+                          ? formatDate(project.createdAt) 
+                          : 'N/A'}
+                      </span>
                     </div>
                     
                     <div className="flex items-center justify-between">
@@ -197,7 +219,11 @@ const ProjectDetailPage: React.FC = () => {
                         <Calendar className="h-5 w-5 text-gray-500 mr-2" />
                         <span>Last Updated</span>
                       </div>
-                      <span className="font-medium">{formatDate(project.updatedAt)}</span>
+                      <span className="font-medium">
+                        {isValidDate(project.updatedAt) 
+                          ? formatDate(project.updatedAt) 
+                          : 'N/A'}
+                      </span>
                     </div>
                     
                     <div className="flex items-center justify-between">

@@ -45,10 +45,12 @@ const RegisterPage: React.FC = () => {
     
     try {
       await register(data);
+      console.log('Registration successful:', data);
       navigate('/dashboard', { replace: true });
     } catch (err) {
       // Error is handled by the AuthContext
     } finally {
+      console.log('Registration attempt:', data);
       setIsSubmitting(false);
     }
   };

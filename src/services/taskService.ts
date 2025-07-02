@@ -1,4 +1,4 @@
-import { Task, Priority, Status, StatusChange } from '../types';
+import { Task } from '../types';
 import axios from 'axios';
 import { config } from '../config/config';
 
@@ -125,7 +125,7 @@ export const taskService = {
 
   deleteTask: async (id: string): Promise<void> => {
     try {
-      await axios.delete(`${config.api.tasks.delete(id.toString())}`);
+      await axios.delete(config.api.tasks.delete(id.toString()));
     } catch (error: any) {
       throw new Error(`Failed to delete task: ${error.response?.data?.detail || error.message}`);
     }
