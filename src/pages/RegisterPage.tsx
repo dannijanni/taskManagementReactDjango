@@ -46,7 +46,7 @@ const RegisterPage: React.FC = () => {
     try {
       await register(data);
       console.log('Registration successful:', data);
-      navigate('/dashboard', { replace: true });
+      navigate('/login', { replace: true });
     } catch (err) {
       // Error is handled by the AuthContext
     } finally {
